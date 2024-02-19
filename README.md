@@ -1,4 +1,4 @@
-# MongoDBJDBC JDBC Test Program
+# MongoDBJDBC Test Program
 
 First try working with MongoDBJDBC in Java, using the MongoDB JDBC driver. I have been testing this with Mongo Atlas. 
 

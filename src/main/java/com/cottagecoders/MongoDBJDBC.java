@@ -20,18 +20,10 @@ public class MongoDBJDBC {
     mdb.run();
   }
 
-  // String.format(
-  //            "",
   void run() {
-    String jdbcConnectionString =
-        String.format(
-            "jdbc:mongodb+srv://%s:%s@%s.mongodb.net",
-            System.getenv("MONGODB_USERNAME"),
-            System.getenv("MONGODB_PASSWORD"),
-            System.getenv("MONGODB_CLUSTER_ID"));
-
-    jdbcConnectionString =
-        "jdbc:mongodb://atlas-sql-65b9b4a378435b475bd7a099-i8kej.a.query.mongodb.net/?ssl=true&authSource=admin";
+    String jdbcConnectionString = String.format(
+        "jdbc:mongodb://%s.mongodb.net/?ssl=true&authSource=admin",
+        System.getenv("MONGODB_SQL_URL"));
 
     Properties p = new java.util.Properties();
     p.setProperty("database", DB_NAME);
@@ -40,11 +32,14 @@ public class MongoDBJDBC {
 
     try (Connection conn = DriverManager.getConnection(jdbcConnectionString, p)) {
       Statement stmt = conn.createStatement();
-      ResultSet rs = stmt.executeQuery("SELECT catname, count(catname)  FROM people GROUP BY catname ORDER BY catname");
+      ResultSet rs =
+          stmt.executeQuery(
+              "SELECT catname, count(catname)  FROM people GROUP BY catname ORDER BY catname");
 
       while (rs.next()) {
         System.out.println(rs.getString(1) + " " + rs.getString(2));
       }
+
     } catch (SQLException ex) {
       System.out.println("Exception: " + ex.getMessage());
       ex.printStackTrace();
